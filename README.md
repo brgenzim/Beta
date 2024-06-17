@@ -12,7 +12,7 @@ Further requirements
 	- cutoff_dates.txt with cutoff dates
 
 Note: Scripts were optimized for HPCs with slurm.
-
+Note: Define paths in the parameters.txt file.
 
 
 #run 1_pdb_summary_fixer.py 
@@ -79,4 +79,4 @@ python3 script/10_collect_sequences.py
 python3 script/11_sequence_interactions.py
 
 
-The result should be 4 files from steps 7, 9, 11 and 12. Output files are defined in the first rows (see path for OUT).
+The result should be 4 files from steps 7, 9, 11 and 12. Output files are defined in the parameter file

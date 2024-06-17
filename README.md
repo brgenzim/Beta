@@ -1,3 +1,4 @@
+```
 Description: generation of training and benchmark sets for AlphaFold2 applications
 Requirements: 
 	- Voronota
@@ -14,8 +15,6 @@ Further requirements
 Note: Scripts were optimized for HPCs with slurm.
 Note: Define paths in the parameters.txt file.
 
-
-#run 1_pdb_summary_fixer.py 
 1. Create a list of PDBs with release date and experimental method. Set paths in the script.
 python3 script/1_pdb_summary.py
 
@@ -80,3 +79,4 @@ python3 script/11_sequence_interactions.py
 
 
 The result should be 4 files from steps 7, 9, 11 and 12. Output files are defined in the parameter file
+```

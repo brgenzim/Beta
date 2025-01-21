@@ -12,9 +12,9 @@ def read_param(x):
 		line=inf.readline()
 		if line=="":
 			break
-		line=line.split("#")[0]
-		line=line.split("=")
-		p[line[0]]=line[1]
+		if line.find("=")!=-1:
+			line=line.split("=")
+			p[line[0]]=line[1].strip()
 	return p
 	
 def readsifts(x):
@@ -64,8 +64,10 @@ start=time.time()
 pdb_count=0
 used={}
 used2={}
+
 for key in pdb_ids:
 	pdb_count+=1	
+	progresser="0"
 	if pdb_count%100==0:
 		while 1:
 			tmp=popen("squeue -u "+parameters["USER"])
@@ -73,6 +75,9 @@ for key in pdb_ids:
 			if len(content)<200:
 				break
 			time.sleep(10)
+			if str((pdb_count/len(pdb_ids))*100)[:5]!=progresser:
+				print("progress: "+str((pdb_count/len(pdb_ids))*100)[:5]+'%')
+				progresser=str((pdb_count/len(pdb_ids))*100)[:5]
 			
 	try:
 		pr=used[key[1:3]]
@@ -80,11 +85,15 @@ for key in pdb_ids:
 		tmp=popen("mkdir "+parameters["WORKDIR"]+"pdb_"+key[1:3])
 		content=tmp.readlines()
 		used[key[1:3]]=""
+
 		
 	outf=open(parameters["WORKDIR"]+"pdb_"+key[1:3]+"/"+key+".fas","w")
 	for i in range (0, len(pdb_ids[key])):
-		outf.write(">"+key+"_"+pdb_ids[key][i]+"\n")
-		outf.write(seqs[key+"_"+pdb_ids[key][i]]+"\n")		
+		try:
+			outf.write(">"+key+"_"+pdb_ids[key][i]+"\n")
+			outf.write(seqs[key+"_"+pdb_ids[key][i]]+"\n")		
+		except KeyError:
+			pass
 	outf.close()
 	try:
 		pr=used2[key]
@@ -92,10 +101,15 @@ for key in pdb_ids:
 		tmp=popen("mkdir "+parameters["WORKDIR"]+"pdb_"+key[1:3]+"/"+key)
 		content=tmp.readlines()	
 		used2[key]=""
-	tmp=popen('zless '+PDB+"/pdb/structures/divided/mmCIF/"+key[1:3]+'/'+key+'.cif.gz | grep "" >'+parameters["WORKDIR"]+'pdb_'+key[1:3]+'/'+key+'/'+key+'.cif')	
+	tmp=popen('zless '+parameters["PDB"]+"/pdb/structures/divided/mmCIF/"+key[1:3]+'/'+key+'.cif.gz | grep "" >'+parameters["WORKDIR"]+'pdb_'+key[1:3]+'/'+key+'/'+key+'.cif')	
 	content=tmp.readlines()	
 	
 
 
-	tmp=popen('sbatch --wrap="python3 '+parameters["SCRIPT1"]+' '+key+' '+parameters["WORKDIR"]+'pdb_'+key[1:3]+'/'+key+'.fas '+parameters["PDB_FAS"]+' '+parameters["PSIBLAST"]+' '+parameters["WORKDIR"]+'pdb_'+key[1:3]+'/'+key+'/ '+parameters["ROOT"]+'data/foldseek/pdb foldseek '+parameters["CUTOFF"]+' '+parameters["PDB_SUMMARY_FILE"]+'/ '+parameters["WORKDIR"]+'pdb_'+key[1:3]+'/'+key+'.result" -o '+parameters["WORKDIR"]+'pdb_'+key[1:3]+'/'+key+'.slurmlog -e '+parameters["WORKDIR"]+'pdb_'+key[1:3]+'/'+key+'.slurmerror')
+	tmp=popen('sbatch --wrap="python3 '+parameters["SCRIPT1"]+' '+key+' '+parameters["WORKDIR"]+'pdb_'+key[1:3]+'/'+key+'.fas '+parameters["PDB_FAS"]+' '+parameters["PSIBLAST"]+' '+parameters["WORKDIR"]+'pdb_'+key[1:3]+'/'+key+'/'+key+'.cif'+' '+parameters['PDB_FOLDSEEK']+' foldseek '+parameters["CUTOFF"]+' '+parameters["WORKDIR"]+'/pdb_summary.txt '+parameters["WORKDIR"]+' '+parameters["WORKDIR"]+'pdb_'+key[1:3]+'/'+key+'.result" --mem 4G -c 2 -o '+parameters["WORKDIR"]+'pdb_'+key[1:3]+'/'+key+'.slurmlog -e '+parameters["WORKDIR"]+'pdb_'+key[1:3]+'/'+key+'.slurmerror')
 	content=tmp.readlines()
+	
+	
+
+	
+

@@ -1,0 +1,51 @@
+Input paths, files
+SIFTS=/home/usr/beta/data/pdb_chain_uniprot.tsv
+	#path for decompressed SIFT tsv file containing UniProt - PDB crossreferences. You can download it from https://ftp.ebi.ac.uk/pub/databases/msd/sifts/flatfiles/tsv/pdb_chain_uniprot.tsv.gz
+PDB=/home/data/wwPDB/
+	#wwPDB location that contains the whole PDB filestructure (e.g. /home/data/wwPDB/)
+PSIBLAST=psiblast
+	#PSIBLAST executable
+FOLDSEEK=foldseek
+	#foldseek executable	
+PDB_FAS=/home/usr/beta/data/pdb_protein.fas
+	#fasta file containing all pdb chain sequences, in fasta format. It's recommended to get it from https://files.wwpdb.org/pub/pdb/derived_data/pdb_seqres.txt.gz and filter for protein sequences
+PDB_FOLDSEEK=/home/usr/beta/data/pdb
+	#foldseek pdb file generated in step 2 (see README)	
+WORKDIR=/home/usr/beta/tmp/
+	#Directory where temporary files will be stored. Clean it up after generating datasets to save space
+ROOT=/home/usr/beta/
+	#Location of the directory containing BETA files
+USER=usr
+	#user id for slurm	
+RESOLUTION=100
+	#Structures above value (in Angstrom) will not considered. 
+ASSEMBLIES=/home/data/wwPDB/pdb/assemblies/mmCIF/divided/
+	#most probable assemblies for PDB files based on ePDB (https://ftp.ebi.ac.uk/pub/databases/pdb/data/assemblies/mmCIF/divided/),
+SPROT_FASTA=/home/usr/beta/data/uniprot_sprot.fas
+	#Decompressed UniProt SwissProt fasta file.
+BIOGRID=/home/usr/beta/data/BIOGRID-ALL-4.4.241.mitab
+	#Decompressed BIOGRID mitab formatted file. Recommended to download from https://downloads.thebiogrid.org/BioGRID/
+	
+Supplied files:	
+SCRIPT2=/home/usr/beta/script/sequence_search.py
+	#sequence search script (supplied)
+SCRIPT1=/home/usr/beta/script/structure_search.py
+	#structure search script (supplied)
+SCRIPT3=/home/usr/beta/script/voronota.py
+	#voronota script (supplied). 
+CUTOFF=/home/usr/beta/data/cutoff_date.txt
+	#Cutoff dates. This file is supplied but can be modified.
+	
+Output files:
+STR_SEARCH_RESULTS=/home/usr/beta/monomer_chains_202501.txt
+	#RESULT 1: New pdb chains since AF training according to cutoff dates. File generated and used by BETA. 
+STR_SEARCH_INTERACTIONS_RESULT=/home/usr/beta/interacting_chains_202501.txt
+	#RESULT 2: New interacting pdb chains AF training according to cutoff dates. File generated and used by BETA. 	
+SEQ_SEARCH_RESULTS=/home/usr/beta/full_length_proteins_202501.txt
+	#RESULT 3: UniProt ACs without pdb chain homologs according to cutoff dates. File generated and used by BETA. 	
+SEQ_SEARCH_INTERACTIONS_RESULT=/home/usr/beta/interacting_full_length_proteins_202501.txt
+	#RESULT 4: Interacting UniProt ACs  according to cutoff dates. File generated and used by BETA.	
+	
+	
+	
+

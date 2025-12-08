@@ -1,4 +1,18 @@
 ```
+You can use this program in two ways.
+
+I: To run this program on a single sequence
+1. You need to create blast db for PDB (download from https://files.wwpdb.org/pub/pdb/derived_data/. It is recommended to use only the protein sequences)
+
+2. Create a list of PDBs with release date and experimental method (supplied and updated for the last release or see step II/1)
+
+3. Use the python script in seq_search/single_search.py 
+python3 search.py <INPUT_FAS(SINGLE)> <BLAST_DB> <PSIB_BLAST COMMAND> <PDB_SUMMARY> <OUTFILE> 
+
+
+
+II: Generate the lists available on the website
+
 Description: generation of training and benchmark sets for AlphaFold2 applications
 Requirements: 
 	- Voronota
